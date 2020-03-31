@@ -35,25 +35,29 @@ public class LiveStreamHolder {
     public void updateMessages(long channelID){
         logger.debug("Checking live streams for channel " + channelID);
         allStreams.forEach(messageData -> {
-            logger.debug("Checking messageData from " + messageData.getStreamerName());
-            messageData.setStreamData(TwitchApiEndpoints.getLiveStreamByUser(messageData.getStreamerID()));
-            if(messageData.isOnline()){
-                if (messageData.getMessageID() != 0) {
-                    EmbedWithPicture embed = editEmbedWithPicture(messageData.getStreamData(),messageData.getEmbedWithPicture());
-                    Output.editEmbedMessageByID(messageData.getMessageID(), channelID, embed.getEmbedBuilder().build());
+            try {
+                logger.debug("Checking messageData from " + messageData.getStreamerName());
+                messageData.setStreamData(TwitchApiEndpoints.getLiveStreamByUser(messageData.getStreamerID()));
+                if (messageData.isOnline()) {
+                    if (messageData.getMessageID() != 0) {
+                        EmbedWithPicture embed = editEmbedWithPicture(messageData.getStreamData(), messageData.getEmbedWithPicture());
+                        Output.editEmbedMessageByID(messageData.getMessageID(), channelID, embed.getEmbedBuilder().build());
+                    } else {
+                        MessageHolder messageHolder = new MessageHolder();
+                        messageData.setEmbedWithPicture(Formatter.buildEmbedWithPictureFromStreamData(messageData.getStreamData()));
+                        Output.sendMessageToChannel(channelID,
+                                messageData.getEmbedWithPicture(),
+                                messageHolder);
+                        messageData.setMessageID(messageHolder.getMessage().getIdLong());
+                    }
                 } else {
-                    MessageHolder messageHolder = new MessageHolder();
-                    messageData.setEmbedWithPicture(Formatter.buildEmbedWithPictureFromStreamData(messageData.getStreamData()));
-                    Output.sendMessageToChannel(channelID,
-                            messageData.getEmbedWithPicture(),
-                            messageHolder);
-                    messageData.setMessageID(messageHolder.getMessage().getIdLong());
+                    if (messageData.getMessageID() != 0) {
+                        Output.deleteMessageByID(messageData.getMessageID(), channelID);
+                        messageData.setMessageID(0);
+                    }
                 }
-            } else{
-                if (messageData.getMessageID() != 0) {
-                    Output.deleteMessageByID(messageData.getMessageID(), channelID);
-                    messageData.setMessageID(0);
-                }
+            } catch (Exception e){
+                logger.warn("{} in updateMessage with {}",e.getMessage(),messageData.getStreamerName());
             }
         });
 
