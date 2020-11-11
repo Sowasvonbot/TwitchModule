@@ -1,6 +1,6 @@
 package twitch_api;
 
-public class ModuleAPI extends core.guild.modules.ModuleAPI {
+public class ModuleAPI extends main.core.guild.modules.ModuleAPI {
 
 
 

@@ -1,4 +1,5 @@
-import core.BigDiscordBot;
+
+import main.core.BigDiscordBot;
 import twitch_api.ModuleAPI;
 
 public class Main {

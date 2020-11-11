@@ -1,11 +1,11 @@
 package twitch_api.livestream;
 
-
-import botcore.EmbedWithPicture;
-import botcore.MessageHolder;
-import botcore.Output;
+import main.botcore.EmbedWithPicture;
+import main.botcore.MessageHolder;
+import main.botcore.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import twitch_api.Config;
 import twitch_api.Formatter;
 import twitch_api.TwitchApiEndpoints;
 
@@ -19,10 +19,12 @@ public class LiveStreamHolder {
 
     List<MessageData> allStreams;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Config config;
 
 
-    public LiveStreamHolder(){
+    public LiveStreamHolder(Config config){
         allStreams = new ArrayList<>();
+        this.config = config;
     }
 
 
@@ -32,16 +34,24 @@ public class LiveStreamHolder {
         allStreams.add(new MessageData(streamerName,id));
     }
 
+
+    /**
+     * Updating all LiveStreamers, which are safed in the @link{allStreams List}.
+     * @param channelID
+     */
     public void updateMessages(long channelID){
         logger.debug("Checking live streams for channel " + channelID);
         allStreams.forEach(messageData -> {
             try {
                 logger.debug("Checking messageData from " + messageData.getStreamerName());
                 messageData.setStreamData(TwitchApiEndpoints.getLiveStreamByUser(messageData.getStreamerID()));
+                messageData.getStreamData().setCustomMessage(config.getCustomMessage(messageData.getStreamerName()));
+
                 if (messageData.isOnline()) {
                     if (messageData.getMessageID() != 0) {
                         EmbedWithPicture embed = editEmbedWithPicture(messageData.getStreamData(), messageData.getEmbedWithPicture());
                         Output.editEmbedMessageByID(messageData.getMessageID(), channelID, embed.getEmbedBuilder().build());
+
                     } else {
                         MessageHolder messageHolder = new MessageHolder();
                         messageData.setEmbedWithPicture(Formatter.buildEmbedWithPictureFromStreamData(messageData.getStreamData()));
@@ -61,6 +71,22 @@ public class LiveStreamHolder {
             }
         });
 
+    }
+
+    public void deleteAllMessages(long channelID){
+        allStreams.forEach(messageData -> {
+            if(messageData.getMessageID() !=0){
+                Output.deleteMessageByID(messageData.getMessageID(),channelID);
+                messageData.setMessageID(0L);
+            }
+        });
+    }
+
+    /**
+     * Remove all Streamers.
+     */
+    public void clearStreamers(){
+        allStreams = new ArrayList<>();
     }
 
 

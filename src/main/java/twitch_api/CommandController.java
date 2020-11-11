@@ -1,9 +1,9 @@
 package twitch_api;
 
-import botcore.MessageHolder;
-import botcore.MyMessageBuilder;
-import core.guild.modules.CommandReturn;
-import core.guild.modules.commands.Command;
+import main.botcore.MessageHolder;
+import main.botcore.MyMessageBuilder;
+import main.core.guild.modules.CommandReturn;
+import main.core.guild.modules.commands.Command;
 import twitch_api.livestream.LiveStreamUpdate;
 import twitch_api.livestream.StreamData;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CommandController implements core.guild.modules.CommandController {
+public class CommandController implements main.core.guild.modules.CommandController {
 
     private Config config;
     private List<MessageHolder> messageHolders;
@@ -93,7 +93,7 @@ public class CommandController implements core.guild.modules.CommandController {
 
 
     protected void update(){
+        this.updater.stopUpdating();
         if (config.isLiveStreamWatch()) this.updater.startUpdating();
-        else this.updater.stopUpdating();
     }
 }

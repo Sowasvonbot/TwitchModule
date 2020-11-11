@@ -1,9 +1,8 @@
 package twitch_api;
 
-
-import botcore.Bot;
-import fileManagement.FileLoader;
-import fileManagement.FileStringReader;
+import main.botcore.Bot;
+import main.fileManagement.FileLoader;
+import main.fileManagement.FileStringReader;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONException;

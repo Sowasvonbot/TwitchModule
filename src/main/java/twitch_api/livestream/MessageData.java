@@ -1,6 +1,10 @@
 package twitch_api.livestream;
 
-import botcore.EmbedWithPicture;
+
+import main.botcore.EmbedWithPicture;
+
+import javax.annotation.Nullable;
+
 
 public class MessageData {
 
@@ -53,5 +57,4 @@ public class MessageData {
         if (streamData == null) return false;
         return streamData.isOnline();
     }
-
 }

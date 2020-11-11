@@ -14,6 +14,7 @@ public class StreamData {
     private String streamName;
     private URL streamLink;
     private int viewer;
+    private String customMessage;
 
 
     public StreamData(boolean online, URL pictureURL, String game, URL logo, String streamerName, String streamName, URL streamLink, int viewer) {
@@ -59,6 +60,14 @@ public class StreamData {
 
     public URL getStreamLink() {
         return streamLink;
+    }
+
+    public void setCustomMessage(String customMessage) {
+        this.customMessage = customMessage;
+    }
+
+    public String getCustomMessage() {
+        return customMessage;
     }
 
     @Override

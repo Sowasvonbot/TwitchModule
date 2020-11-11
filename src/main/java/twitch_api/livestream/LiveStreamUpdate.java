@@ -28,10 +28,14 @@ public class LiveStreamUpdate {
     public LiveStreamUpdate(Config config) {
         this.config = config;
         running = false;
-        liveStreamHolder = new LiveStreamHolder();
+        liveStreamHolder = new LiveStreamHolder(config);
     }
 
+    /**
+     * First, clearing all livestreamer, then add them again.
+     */
     public void readLiveStreamer(){
+        liveStreamHolder.clearStreamers();
         config.getLiveStreamer().forEach(name ->{
             if (!liveStreamHolder.hasStreamer(name.toString()))liveStreamHolder.addStreamer(name.toString());
         });
@@ -42,7 +46,9 @@ public class LiveStreamUpdate {
         if (running) return;
         logger.info("start updating");
         running = true;
+
         readLiveStreamer();
+
         Runnable r = new Runnable() {
             @Override
             public void run() {
