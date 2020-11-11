@@ -7,9 +7,9 @@ public abstract class ConfigFormatter {
     public static String formatConfig(Config config){
         StringBuilder res = new StringBuilder();
         appendUsage(res);
-        res.append("\n\n");
+        res.append("\n\n\n");
         appendStreamer(res,config);
-        res.append("\n\n");
+        res.append("\n\n\n");
         appendCustomMessages(res,config);
 
         return res.toString();
@@ -45,7 +45,6 @@ public abstract class ConfigFormatter {
                 .append("setCustomMessage: Set a custom message for given streamer").append("\n")
                 .append("Usage: **setCustomMessage StreamerName:Here your message**").append("\n")
                 .append("To delete a message, simply type setCustomMessage StreamerName:none").append("\n")
-                .append("\n")
                 .append("===========================================================");
         return sb;
     }
