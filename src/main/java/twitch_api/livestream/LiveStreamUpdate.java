@@ -62,6 +62,7 @@ public class LiveStreamUpdate {
     public void stopUpdating(){
         if (!running) return;
         logger.info("Stop updating");
+        liveStreamHolder.deleteAllMessages(config.getLiveStreamChannelUpdateID());
         running = false;
         executor.shutdownNow();
     }

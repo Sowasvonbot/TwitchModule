@@ -76,8 +76,12 @@ public class LiveStreamHolder {
     public void deleteAllMessages(long channelID){
         allStreams.forEach(messageData -> {
             if(messageData.getMessageID() !=0){
-                Output.deleteMessageByID(messageData.getMessageID(),channelID);
-                messageData.setMessageID(0L);
+                try {
+                    Output.deleteMessageByID(messageData.getMessageID(), channelID);
+                    messageData.setMessageID(0L);
+                } catch (Exception e){
+                    logger.warn(e.getLocalizedMessage());
+                }
             }
         });
     }

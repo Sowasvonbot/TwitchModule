@@ -88,7 +88,9 @@ public class CommandController implements main.core.guild.modules.CommandControl
 
     @Override
     public String setConfigVariable(String variable, String value, long guildID) {
-        return config.setConfigVariable(variable,value, guildID);
+        String res =  config.setConfigVariable(variable,value, guildID);
+        this.update();
+        return res;
     }
 
 

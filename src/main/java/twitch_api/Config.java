@@ -107,7 +107,6 @@ public class Config implements MiscModuleData {
                 case "addstreamer":
                     if(addStreamer(value)) return "Success";
                     else return "Error: " + value + " not found on twitch";
-
                 case "setstreamer":
                     return "Not working atm";
                 case "removestreamer":
