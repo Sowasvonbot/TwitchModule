@@ -146,6 +146,11 @@ public class Config implements MiscModuleData {
         String streamerName = valueArray[0];
         String customMessage = valueArray[1];
 
+        if(customMessage.equals("none") && customMessages.containsKey(streamerName)) {
+            customMessages.remove(streamerName);
+            return "Custom Message for Streamer **" + streamerName+ "** deleted.";
+        }
+
         if(!liveStreamer.contains(streamerName)) return "Streamer: **" + streamerName + "** not found";
 
         if(customMessages.containsKey(streamerName)) this.changeCustomMessageByStreamer(streamerName,customMessage);
